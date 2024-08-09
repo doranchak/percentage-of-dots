@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas with Dots</title>
+  <style>
+    button {display: block; margin: 1em;}
+  </style>
+</head>
+<body>
+  <button id="greyOutButton">Grey Out Dots</button>
+  <canvas id="dotCanvas" width="1600" height="900"></canvas>
+
+  <script>
+    const canvas = document.getElementById('dotCanvas');
+    const ctx = canvas.getContext('2d');
+    const button = document.getElementById('greyOutButton');
+
+    const totalDots = 84035;
+    const remainingDots = 840;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    const dotSize = 2; // Adjust the dot size as needed
+	const dotSpacing = 1;
+
+    // Calculate grid size
+    const cols = Math.floor(Math.sqrt(totalDots * (canvasWidth / canvasHeight)));
+    const rows = Math.floor(totalDots / cols);
+
+    // Function to draw the dots
+    function drawDots() {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      let x = 0;
+      let y = 0;
+      for (let i = 0; i < totalDots; i++) {
+        if (i > 0 && i % cols === 0) {
+          x = 0;
+          y += dotSize + dotSpacing; // Adjust spacing as needed
+        }
+        ctx.fillStyle = 'black';
+        ctx.fillRect(x, y, dotSize, dotSize);
+        x += dotSize + dotSpacing; // Adjust spacing as needed
+      }
+    }
+
+    // Function to grey out dots
+    function greyOutDots() {
+      const indices = Array.from({ length: totalDots }, (_, i) => i);
+      // Shuffle the array
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      // Get the indices to remain black
+      const blackIndices = new Set(indices.slice(0, remainingDots));
+      
+      let x = 0;
+      let y = 0;
+      for (let i = 0; i < totalDots; i++) {
+        if (i > 0 && i % cols === 0) {
+          x = 0;
+          y += dotSize + dotSpacing; // Adjust spacing as needed
+        }
+        ctx.fillStyle = blackIndices.has(i) ? 'red' : '#eee';
+        ctx.fillRect(x, y, dotSize, dotSize);
+        x += dotSize + dotSpacing; // Adjust spacing as needed
+      }
+    }
+
+    // Draw the initial dots
+    drawDots();
+
+    // Add event listener to the button
+    button.addEventListener('click', greyOutDots);
+  </script>
+</body>
+</html>
