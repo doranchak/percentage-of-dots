@@ -5,4 +5,4 @@ I made this mostly with ChatGPT, for a visualization I needed for a video.  I wa
 
 Click the button to show the 1%.
 
-Demo here:  https://doranchak.github.io/percentage-of-dots
+Demo here:  https://doranchak.github.io/percentage-of-dots/dots.html
